@@ -8,7 +8,6 @@ import math
 import inspect 
 import numpy as np 
 import os 
-from hellaswag import render_example, iterate_examples
 
 #----------------------Devices-----------------------
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -104,8 +103,8 @@ class GPT2(nn.Module):
             B, T = idx.shape
             index = torch.arange(0, T, device=idx.device)
             
-            pos_emb = self.transformer.wpe(index) # (T, C)
-            tok_emb = self.transformer.wte(idx) # (B, T, C)
+            pos_emb = self.transformer.wpe(index) 
+            tok_emb = self.transformer.wte(idx)  
             x =  pos_emb + tok_emb      
             
             for H in self.transformer.h:
@@ -182,7 +181,7 @@ model.to(device)
 torch.set_float32_matmul_precision('high')
 print(f'\nDevice Used To Load MODEL is : {device}\n')
                 
-#---------------------Custom Training loop-------------------------
+#---------------------Custom Training loop setings-------------------------
 num_iter = 100
 max_lr = 6e-4
 min_lr = max_lr * 0.1
@@ -216,14 +215,17 @@ log_dir = r"F:\works\A-important\A-neurals\Vortex-Language-Models\GPT-2 From scr
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, "training_log.txt")
 
-# Initialize the tokenizer
+#-------------------------------Gpt2 official tokenizer--------------------------
 enc = tiktoken.get_encoding("gpt2")
 val_lossi, trainl_lossi = [], []
+
+#---------------------Custom Training loop-------------------------
+
 for step in range(max_steps):
     t0 = time.time()
     last_step = (step == max_steps - 1)
 
-    # Evaluate validation loss
+    #--------------------Evaluate validation loss---------------------
     if step % 250 == 0 or last_step:
         model.eval()
         val_loader.reset()
@@ -250,7 +252,7 @@ for step in range(max_steps):
             }
             torch.save(checkpoint, checkpoint_path)
 
-    # Generate text
+    #-----------------------paragraph------------------------------------------
     if (step > 0 and step % 250 == 0) or last_step:
         model.eval()
         num_return_sequences = 4
@@ -276,7 +278,7 @@ for step in range(max_steps):
             decoded = enc.decode(tokens)
             print(f"\n---------------\nsample {i}: {decoded}\n-----\n")
 
-    # Optimization step
+    
     model.train()
     optimizer.zero_grad()
     loss_accum = 0.0
