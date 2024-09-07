@@ -13,14 +13,16 @@ def tokenize(doc, eot, enc):
     assert (0 <= tokens_np).all() and (tokens_np < 2**16).all(), "token dictionary too large for uint16"
     tokens_np_uint16 = tokens_np.astype(np.uint16)
     return tokens_np_uint16
+ 
 
 def write_datafile(filename, tokens_np):
     np.save(filename, tokens_np)
 
+
 if __name__ == '__main__':
     mp.freeze_support()
 
-    local_dir = r"F:\works\A-important\A-neurals\Vortex-Language-Models\GPT-2 From scratch\edu_fineweb10B"
+    local_dir = r"F:\works\A-important\A-neurals\GPT-2--From-Scratch\edu_fineweb10B"
     remote_name = "sample-10BT"
     shard_size = int(1e8)  
     DATA_CACHE_DIR = os.path.join(os.path.dirname(__file__), local_dir)
