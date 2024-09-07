@@ -279,6 +279,7 @@ for step in range(max_steps):
             print(f"\n---------------\nsample {i}: {decoded}\n-----\n")
 
     
+    
     model.train()
     optimizer.zero_grad()
     loss_accum = 0.0
