@@ -148,7 +148,7 @@ class DataLoaderLite:
         self.B = B
         self.T = T
         assert split in {'train', 'val'}
-        data_root = r"F:\works\A-important\A-neurals\Vortex-Language-Models\GPT-2 From scratch\edu_fineweb10B"  
+        data_root = r"F:\works\A-important\A-neurals\GPT-2--From-Scratch\edu_fineweb10B"  
         shards = os.listdir(data_root)
         shards = [s for s in shards if split in s]
         shards = sorted(shards)
@@ -201,7 +201,7 @@ def get_lr(it):
 optimizer = model.configure_optimizers(weight_decay=0.1, learning_rate=6e-4)
 
 total_batch_size = 524288
-B = 8
+B = 4
 T = 1024
 assert total_batch_size % (B*T) == 0, "make sure total batch size is divisible by B*T"
 grad_accum_steps = total_batch_size // (B*T)
@@ -211,7 +211,7 @@ print(f"Gram accumulation is {grad_accum_steps}")
 train_loader = DataLoaderLite(B, T, 'train')
 val_loader = DataLoaderLite(B, T, 'val')
 
-log_dir = r"F:\works\A-important\A-neurals\Vortex-Language-Models\GPT-2 From scratch\logs"
+log_dir = r"F:\works\A-important\A-neurals\GPT-2--From-Scratch\logs"
 os.makedirs(log_dir, exist_ok=True)
 log_file = os.path.join(log_dir, "training_log.txt")
 
@@ -257,7 +257,7 @@ for step in range(max_steps):
         model.eval()
         num_return_sequences = 4
         max_length = 32
-        tokens = enc.encode("generally LLM means")
+        tokens = enc.encode("What is Computer?")
         tokens = torch.tensor(tokens, dtype=torch.long)
         tokens = tokens.unsqueeze(0).repeat(num_return_sequences, 1)
         xgen = tokens.to(device)
@@ -276,9 +276,8 @@ for step in range(max_steps):
         for i in range(num_return_sequences):
             tokens = xgen[i, :max_length].tolist()
             decoded = enc.decode(tokens)
-            print(f"\n---------------\nsample {i}: {decoded}\n-----\n")
+            print(f"\nsample {i}: \n{decoded}\n")
 
-    
     
     model.train()
     optimizer.zero_grad()
@@ -301,7 +300,6 @@ for step in range(max_steps):
     dt = t1 - t0
     tokens_processed = train_loader.B * train_loader.T * grad_accum_steps
     tokens_per_sec = tokens_processed / dt
-    trainl_lossi(loss_accum.item())
     print(f"step {step:5d} | loss: {loss_accum.item():.6f} | lr {lr:.4e} | norm: {norm:.4f} | dt: {dt*1000:.2f}ms | tok/sec: {tokens_per_sec:.2f}")
     with open(log_file, "a") as f:
         f.write(f"{step} train {loss_accum.item():.6f}\n")
