@@ -36,8 +36,8 @@ if __name__ == '__main__':
         token_count = 0
         progress_bar = None
         
-        for doc in fw:  # Loop through each document in the dataset
-            tokens = tokenize(doc, eot=eot, enc=enc)  # Directly pass eot and enc
+        for doc in fw:    
+            tokens = tokenize(doc, eot=eot, enc=enc) 
             if token_count + len(tokens) < shard_size:
                 all_tokens_np[token_count:token_count + len(tokens)] = tokens
                 token_count += len(tokens)
