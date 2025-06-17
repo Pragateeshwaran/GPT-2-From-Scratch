@@ -1,6 +1,6 @@
-# NeuroFill From Scratch
+# NeuroFill  
 
-This project implements a NeuroFill model from scratch using PyTorch. It includes data preprocessing, model architecture, and a custom training loop.
+This project implements a NeuroFill model using PyTorch. It includes data preprocessing, model architecture, and a custom training loop.
 
 ## Project Structure
 
