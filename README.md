@@ -1,6 +1,6 @@
-# GPT-2 From Scratch
+# NeuroFill From Scratch
 
-This project implements a GPT-2 model from scratch using PyTorch. It includes data preprocessing, model architecture, and a custom training loop.
+This project implements a NeuroFill model from scratch using PyTorch. It includes data preprocessing, model architecture, and a custom training loop.
 
 ## Project Structure
 
@@ -9,7 +9,7 @@ This project implements a GPT-2 model from scratch using PyTorch. It includes da
 
 ## Features
 
-- Implementation of GPT-2 architecture
+- Implementation of NeuroFill architecture
 - Custom data loading and preprocessing
 - Configurable model parameters
 - Training with learning rate scheduling and gradient accumulation
@@ -41,7 +41,7 @@ This project implements a GPT-2 model from scratch using PyTorch. It includes da
 
 ## Model Architecture
 
-The GPT-2 model implemented here includes:
+The NeuroFill model implemented here includes:
 - Token and position embeddings
 - Multiple transformer blocks with self-attention and feed-forward layers
 - Layer normalization
